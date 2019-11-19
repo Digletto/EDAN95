@@ -1,8 +1,11 @@
-from keras import layers, models
-import matplotlib.pyplot as plt
 import os
+
+import matplotlib.pyplot as plt
 from keras import layers, models
 from keras.preprocessing.image import ImageDataGenerator
+import tensorflow as tf
+tf.get_logger().setLevel('WARNING')
+
 
 # keras.__version__
 
@@ -26,7 +29,7 @@ def train(resize, data_path, batch_size, epochs, augmentation):
 
     # ------------------------------------------------------------------------------------------------
 
-    train_datagen_naug = ImageDataGenerator(rescale=1. / 255)
+    val_datagen = ImageDataGenerator(rescale=1. / 255)
 
     train_datagen_aug = ImageDataGenerator(rescale=1. / 255,
                                            rotation_range=40,
@@ -40,7 +43,7 @@ def train(resize, data_path, batch_size, epochs, augmentation):
     if augmentation:
         train_datagen = train_datagen_aug
     else:
-        train_datagen = train_datagen_naug
+        train_datagen = val_datagen
 
     train_generator = train_datagen.flow_from_directory(
             os.path.join(data_path, 'train'),  # This is the source directory for training images
@@ -51,13 +54,11 @@ def train(resize, data_path, batch_size, epochs, augmentation):
             # Since we use categorical_crossentropy loss, we need categorical labels
             class_mode='categorical')
 
-    validation_generator = train_datagen.flow_from_directory(
+    validation_generator = val_datagen.flow_from_directory(
             os.path.join(data_path, 'validation'),  # This is the source directory for training images
             target_size=(64, 64),  # All images will be resized to target size
             batch_size=batch_size,
-            # Specify the classes explicitly
             classes=['daisy', 'dandelion', 'rose', 'sunflower', 'tulip'],
-            # Since we use categorical_crossentropy loss, we need categorical labels
             class_mode='categorical')
 
     # ------------------------------------------------------------------------------------------------
@@ -65,25 +66,24 @@ def train(resize, data_path, batch_size, epochs, augmentation):
     # total_sample = train_generator.n
     history = model.fit_generator(
             train_generator,
-            steps_per_epoch=train_generator.samples // batch_size,
+            steps_per_epoch=train_generator.samples // batch_size+1,
             validation_data=validation_generator,
-            validation_steps=validation_generator.samples // batch_size,
+            validation_steps=validation_generator.samples // batch_size+1,
             epochs=epochs,
             verbose=1)
 
     # ------------------------------------------------------------------------------------------------
 
     plt.figure(figsize=(7, 4))
-    plt.plot([i+1 for i in range(epochs)],history.history['acc'], '-o', c='k', lw=2, markersize=9)
+    plt.plot([i+1 for i in range(epochs)], history.history['acc'], '-o', c='k', lw=2, markersize=9)
     plt.grid(True)
     plt.title("Training accuracy with epochs\n", fontsize=18)
     plt.xlabel("Training epochs", fontsize=15)
     plt.ylabel("Training accuracy", fontsize=15)
     plt.xticks(fontsize=15)
     plt.yticks(fontsize=15)
-    plt.show()
+    # plt.show()
 
-    return history
+    return model
 
-
-train(resize=64, data_path='../datasets/flowers_split/', batch_size=128, epochs=20, augmentation=True)
+# train(resize=64, data_path='../datasets/flowers_split/', batch_size=128, epochs=20, augmentation=True)

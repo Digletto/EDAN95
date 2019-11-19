@@ -9,18 +9,18 @@ import random
 import shutil
 
 # The machine name
-vilde = False
+# vilde = False
 
 # To create the same dataset
 random.seed(0)
 
 # Here write the path to your dataset
-if vilde:
-    base = '/home/pierre/'
-else:
-    base = '/Users/pierre/Documents/'
-original_dataset_dir = os.path.join(base, 'Cours/EDAN95/datasets/flowers')
-dataset = os.path.join(base, 'Cours/EDAN95/datasets/flowers_split')
+# if vilde:
+#     base = '/home/pierre/'
+# else:
+#     base = '/Users/pierre/Documents/'
+original_dataset_dir = '../datasets/flowers'
+dataset = '../datasets/flowers_split'
 
 train_dir = os.path.join(dataset, 'train')
 validation_dir = os.path.join(dataset, 'validation')

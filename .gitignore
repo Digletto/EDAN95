@@ -1,4 +1,4 @@
 # don't track these files and directories
 datasets/
 lab3/.idea
-lab3/__pychache__/
+lab3/__pychache__

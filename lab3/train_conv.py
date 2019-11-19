@@ -3,9 +3,6 @@ import os
 import matplotlib.pyplot as plt
 from keras import layers, models
 from keras.preprocessing.image import ImageDataGenerator
-import tensorflow as tf
-tf.get_logger().setLevel('WARNING')
-
 
 # keras.__version__
 

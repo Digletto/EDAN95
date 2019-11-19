@@ -7,7 +7,7 @@ from keras.preprocessing.image import ImageDataGenerator
 # keras.__version__
 
 
-def train(resize, data_path, batch_size, epochs):
+def train(resize, data_path, batch_size, epochs, augmentation):
     model = models.Sequential()
     model.add(layers.Conv2D(32, (3, 3), activation='relu', input_shape=(resize, resize, 3)))
     model.add(layers.MaxPooling2D((2, 2)))
@@ -21,19 +21,27 @@ def train(resize, data_path, batch_size, epochs):
     model.summary()
 
     model.compile(optimizer='rmsprop',
-                      loss='categorical_crossentropy',
-                      metrics=['accuracy'])
+                  loss='categorical_crossentropy',
+                  metrics=['accuracy'])
 
     # ------------------------------------------------------------------------------------------------
 
-    train_datagen = ImageDataGenerator(rescale=1. / 255,
-                                       rotation_range=40,
-                                       width_shift_range=0.2,
-                                       height_shift_range=0.2,
-                                       shear_range=0.2,
-                                       zoom_range=0.2,
-                                       horizontal_flip=True,
-                                       fill_mode='nearest')
+    train_datagen_naug = ImageDataGenerator(rescale=1. / 255)
+
+    train_datagen_aug = ImageDataGenerator(rescale=1. / 255,
+                                           rotation_range=40,
+                                           width_shift_range=0.2,
+                                           height_shift_range=0.2,
+                                           shear_range=0.2,
+                                           zoom_range=0.2,
+                                           horizontal_flip=True,
+                                           fill_mode='nearest')
+
+    if augmentation:
+        train_datagen = train_datagen_aug
+    else:
+        train_datagen = train_datagen_naug
+
     train_generator = train_datagen.flow_from_directory(
             os.path.join(data_path, 'train'),  # This is the source directory for training images
             target_size=(64, 64),  # All images will be resized to target size
@@ -78,4 +86,4 @@ def train(resize, data_path, batch_size, epochs):
     return history
 
 
-train(64, '../datasets/flowers_split/', 128, 20)
+train(resize=64, data_path='../datasets/flowers_split/', batch_size=128, epochs=20, augmentation=True)

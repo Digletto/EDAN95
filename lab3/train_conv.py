@@ -44,7 +44,7 @@ def train(resize, data_path, batch_size, epochs, augmentation):
 
     train_generator = train_datagen.flow_from_directory(
             os.path.join(data_path, 'train'),  # This is the source directory for training images
-            target_size=(64, 64),  # All images will be resized to target size
+            target_size=(resize, resize),  # All images will be resized to target size
             batch_size=batch_size,
             # Specify the classes explicitly
             classes=['daisy', 'dandelion', 'rose', 'sunflower', 'tulip'],
@@ -53,7 +53,7 @@ def train(resize, data_path, batch_size, epochs, augmentation):
 
     validation_generator = val_datagen.flow_from_directory(
             os.path.join(data_path, 'validation'),  # This is the source directory for training images
-            target_size=(64, 64),  # All images will be resized to target size
+            target_size=(resize, resize),  # All images will be resized to target size
             batch_size=batch_size,
             classes=['daisy', 'dandelion', 'rose', 'sunflower', 'tulip'],
             class_mode='categorical')

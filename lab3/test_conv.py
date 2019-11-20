@@ -5,11 +5,13 @@ from keras.preprocessing.image import ImageDataGenerator
 from sklearn.metrics import classification_report, confusion_matrix
 
 from train_conv import train
+import tensorflow as tf
+sess = tf.Session(config=tf.ConfigProto(log_device_placement=True))
 
 data_path = '../datasets/flowers_split/'
-resize = 64
-batch_size = 128
-epochs = 30
+resize = 256
+batch_size = 64
+epochs = 20
 
 model = train(resize=resize, data_path=data_path, batch_size=batch_size, epochs=epochs, augmentation=True)
 

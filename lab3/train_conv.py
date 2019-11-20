@@ -9,11 +9,21 @@ from keras.preprocessing.image import ImageDataGenerator
 
 def train(resize, data_path, batch_size, epochs, augmentation):
     model = models.Sequential()
+    # 1
     model.add(layers.Conv2D(32, (3, 3), activation='relu', input_shape=(resize, resize, 3)))
     model.add(layers.MaxPooling2D((2, 2)))
+    # 2
     model.add(layers.Conv2D(64, (3, 3), activation='relu'))
     model.add(layers.MaxPooling2D((2, 2)))
+    # 3
     model.add(layers.Conv2D(64, (3, 3), activation='relu'))
+    model.add(layers.MaxPooling2D((2, 2)))
+    # 4
+    model.add(layers.Conv2D(64, (3, 3), activation='relu'))
+    model.add(layers.MaxPooling2D((2, 2)))
+    # 5
+    model.add(layers.Conv2D(64, (3, 3), activation='relu'))
+    model.add(layers.MaxPooling2D((2, 2)))
     model.add(layers.Flatten())
     model.add(layers.Dense(64, activation='relu'))
     model.add(layers.Dense(5, activation='softmax'))
@@ -52,8 +62,8 @@ def train(resize, data_path, batch_size, epochs, augmentation):
             class_mode='categorical')
 
     validation_generator = val_datagen.flow_from_directory(
-            os.path.join(data_path, 'validation'),  # This is the source directory for training images
-            target_size=(resize, resize),  # All images will be resized to target size
+            os.path.join(data_path, 'validation'),
+            target_size=(resize, resize),
             batch_size=batch_size,
             classes=['daisy', 'dandelion', 'rose', 'sunflower', 'tulip'],
             class_mode='categorical')

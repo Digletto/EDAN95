@@ -11,7 +11,7 @@ sess = tf.Session(config=tf.ConfigProto(log_device_placement=True))
 data_path = '../datasets/flowers_split/'
 resize = 256
 batch_size = 64
-epochs = 20
+epochs = 30
 
 model = train(resize=resize, data_path=data_path, batch_size=batch_size, epochs=epochs, augmentation=True)
 

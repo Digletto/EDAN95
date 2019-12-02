@@ -1,5 +1,5 @@
 # don't track these files and directories
 datasets/
 lab3/.idea
-lab3/__pychache__
+__pycache__/
 .ipynb_checkpoints

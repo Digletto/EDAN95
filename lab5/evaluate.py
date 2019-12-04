@@ -24,18 +24,18 @@ def _evaluate_accuracy(clfs, x_train, x_test, y_train, y_test):
 
 
 def evaluate():
-    names = ['Sklearn NCC', 'Sklearn GNB', 'Custom NCC', 'Custom GNB', 'Custom NBC']
+    names = ['Sklearn NCC', 'Sklearn GNB', 'Custom NCC', 'Custom NBC', 'Custom GNB']
 
     results = {
         'Sklearn digits':
         _evaluate_accuracy([NearestCentroid(), GaussianNB(),
-                            NCC(), GNB(), NBC()], *data.load_sk_digits()),
+                            NCC(), NBC(), GNB()], *data.load_sk_digits()),
         'Sklearn digits summarized':
         _evaluate_accuracy([NearestCentroid(), GaussianNB(),
-                            NCC(), GNB(), NBC()], *data.load_sk_digits_summarized()),
+                            NCC(), NBC(), GNB()], *data.load_sk_digits_summarized()),
         'MNIST Light':
         _evaluate_accuracy(
-            [NearestCentroid(), GaussianNB(), NCC(), GNB(), None], *data.load_light_digits()),
+            [NearestCentroid(), GaussianNB(), NCC(), None, GNB()], *data.load_light_digits()),
     }
 
     print(pd.DataFrame(results, index=names))
